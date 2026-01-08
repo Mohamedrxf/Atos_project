@@ -2,20 +2,55 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Target, Scale } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import cricketStadiumBg from "@/assets/cricket-stadium-bg.jpg";
 
 const Landing = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Grid pattern background */}
-        <div className="absolute inset-0 grid-pattern opacity-30" />
+        {/* Animated Stadium Background */}
+        <motion.div 
+          className="absolute inset-0"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 20, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
+        >
+          <img 
+            src={cricketStadiumBg} 
+            alt="" 
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
         
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
+        {/* Dark overlay for readability */}
+        <div className="absolute inset-0 bg-background/70" />
         
-        {/* Subtle accent glow */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl" />
+        {/* Animated gradient overlay */}
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background"
+          initial={{ opacity: 0.8 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 3, ease: "easeInOut", repeat: Infinity, repeatType: "reverse" }}
+        />
+        
+        {/* Animated accent glow - mimics stadium lights */}
+        <motion.div 
+          className="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-primary/10 rounded-full blur-3xl"
+          animate={{ 
+            opacity: [0.3, 0.6, 0.3],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div 
+          className="absolute top-1/3 right-1/4 w-[300px] h-[300px] bg-primary/8 rounded-full blur-3xl"
+          animate={{ 
+            opacity: [0.4, 0.2, 0.4],
+            scale: [1.1, 1, 1.1],
+          }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        />
 
         <div className="container relative z-10">
           <motion.div
