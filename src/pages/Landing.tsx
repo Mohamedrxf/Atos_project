@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Shield, Scan, Network, Bot, Lock, Eye, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import cyberBgVideo from "@/assets/cyber-bg-video.mp4";
 
 /* Animated dependency network node */
 const NetworkNode = ({ x, y, size, delay, color }: { x: string; y: string; size: number; delay: number; color: string }) => (
@@ -40,33 +41,52 @@ const Landing = () => {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden cyber-grid">
-        {/* Ambient glows */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Video background */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src={cyberBgVideo} type="video/mp4" />
+          </video>
+          {/* Dark overlay for readability */}
+          <div className="absolute inset-0 bg-background/75" />
+          {/* Gradient bottom fade */}
+          <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-background" />
+        </div>
+
+        {/* Ambient glows on top of video */}
         <motion.div
-          className="absolute top-1/4 left-1/6 w-[500px] h-[500px] rounded-full blur-[120px]"
-          style={{ background: "radial-gradient(circle, hsl(195 100% 50% / 0.15), transparent)" }}
+          className="absolute top-1/4 left-1/6 w-[500px] h-[500px] rounded-full blur-[120px] z-[1]"
+          style={{ background: "radial-gradient(circle, hsl(195 100% 50% / 0.12), transparent)" }}
           animate={{ opacity: [0.3, 0.6, 0.3], scale: [1, 1.15, 1] }}
           transition={{ duration: 5, repeat: Infinity }}
         />
         <motion.div
-          className="absolute bottom-1/4 right-1/6 w-[400px] h-[400px] rounded-full blur-[100px]"
-          style={{ background: "radial-gradient(circle, hsl(265 80% 60% / 0.12), transparent)" }}
+          className="absolute bottom-1/4 right-1/6 w-[400px] h-[400px] rounded-full blur-[100px] z-[1]"
+          style={{ background: "radial-gradient(circle, hsl(265 80% 60% / 0.1), transparent)" }}
           animate={{ opacity: [0.4, 0.2, 0.4], scale: [1.1, 1, 1.1] }}
           transition={{ duration: 6, repeat: Infinity, delay: 1 }}
         />
 
-        {/* Network illustration - floating nodes */}
-        <div className="absolute inset-0 pointer-events-none">
-          <NetworkNode x="15%" y="20%" size={12} delay={0} color="hsl(195 100% 50%)" />
-          <NetworkNode x="25%" y="35%" size={8} delay={0.5} color="hsl(145 80% 50%)" />
-          <NetworkNode x="10%" y="55%" size={10} delay={1} color="hsl(195 100% 50%)" />
-          <NetworkNode x="75%" y="25%" size={14} delay={0.3} color="hsl(0 85% 55%)" />
-          <NetworkNode x="80%" y="45%" size={8} delay={0.8} color="hsl(265 80% 60%)" />
-          <NetworkNode x="85%" y="65%" size={10} delay={1.2} color="hsl(145 80% 50%)" />
-          <NetworkNode x="70%" y="70%" size={6} delay={0.6} color="hsl(45 100% 55%)" />
-          <NetworkNode x="20%" y="70%" size={8} delay={1.5} color="hsl(195 100% 50%)" />
-          <NetworkNode x="60%" y="15%" size={10} delay={0.9} color="hsl(195 100% 50%)" />
-          <NetworkNode x="40%" y="80%" size={6} delay={1.8} color="hsl(265 80% 60%)" />
+        {/* Floating network nodes over video */}
+        <div className="absolute inset-0 pointer-events-none z-[2]">
+          <NetworkNode x="8%" y="18%" size={14} delay={0} color="hsl(195 100% 50%)" />
+          <NetworkNode x="22%" y="32%" size={9} delay={0.5} color="hsl(145 80% 50%)" />
+          <NetworkNode x="6%" y="58%" size={11} delay={1} color="hsl(195 100% 50%)" />
+          <NetworkNode x="78%" y="22%" size={16} delay={0.3} color="hsl(0 85% 55%)" />
+          <NetworkNode x="83%" y="48%" size={9} delay={0.8} color="hsl(265 80% 60%)" />
+          <NetworkNode x="88%" y="68%" size={11} delay={1.2} color="hsl(145 80% 50%)" />
+          <NetworkNode x="72%" y="74%" size={7} delay={0.6} color="hsl(45 100% 55%)" />
+          <NetworkNode x="18%" y="72%" size={9} delay={1.5} color="hsl(195 100% 50%)" />
+          <NetworkNode x="62%" y="12%" size={11} delay={0.9} color="hsl(195 100% 50%)" />
+          <NetworkNode x="42%" y="84%" size={7} delay={1.8} color="hsl(265 80% 60%)" />
+          <NetworkNode x="50%" y="8%" size={8} delay={2.1} color="hsl(45 100% 55%)" />
+          <NetworkNode x="92%" y="35%" size={6} delay={1.3} color="hsl(195 100% 50%)" />
         </div>
 
         <div className="container relative z-10">
