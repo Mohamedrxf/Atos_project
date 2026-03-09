@@ -45,8 +45,16 @@ const Scan = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24 pb-12 cyber-grid">
-      <div className="container max-w-3xl">
+    <div className="min-h-screen pt-24 pb-12 relative overflow-hidden">
+      {/* Video Background */}
+      <video
+        autoPlay loop muted playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0"
+        src={cyberBgVideo}
+      />
+      <div className="absolute inset-0 bg-background/80 z-[1]" />
+      <div className="absolute inset-0 cyber-grid z-[2]" />
+      <div className="container max-w-3xl relative z-[3]">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <div className="text-center mb-10">
             <h1 className="text-3xl font-bold mb-2">Scan Your Project</h1>
