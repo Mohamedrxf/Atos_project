@@ -4,6 +4,7 @@ import { Bot, Send, User, Shield, Sparkles } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import cyberBgVideo from "@/assets/cyber-bg-video.mp4";
 
 interface Message {
   role: "user" | "ai";
