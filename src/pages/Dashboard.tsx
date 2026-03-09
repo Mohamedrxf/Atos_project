@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Shield, Package, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
+import cyberBgVideo from "@/assets/cyber-bg-video.mp4";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
