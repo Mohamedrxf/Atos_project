@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle, Shield, TrendingUp, XCircle } from "lucide-rea
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import cyberBgVideo from "@/assets/cyber-bg-video.mp4";
 
 const recommendations = [
   {
