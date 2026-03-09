@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { AlertTriangle, ExternalLink, ShieldAlert, ShieldCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import cyberBgVideo from "@/assets/cyber-bg-video.mp4";
 
 const vulns = [
   { cve: "CVE-2024-48999", pkg: "lodash@4.17.20", severity: "Critical", score: 9.8, desc: "Prototype Pollution in lodash allows remote attackers to manipulate object prototypes.", fix: "Upgrade to lodash@4.17.21" },
