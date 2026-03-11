@@ -2,7 +2,7 @@ export async function scanPackage(packageName: string) {
 
     try {
   
-      const response = await fetch("http://127.0.0.1:8000/scan-package", {
+      const response = await fetch("http://127.0.0.1:8000/api/scan-package", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -29,7 +29,8 @@ export async function scanPackage(packageName: string) {
         security_score: 0,
         status: "Error",
         dependencies_found: 0,
-        vulnerabilities: 0
+        vulnerabilities: 0,
+        graph: null
       };
   
     }

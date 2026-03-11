@@ -1,20 +1,34 @@
 import { motion } from "framer-motion";
-import { Package, AlertTriangle, CheckCircle, XCircle, Activity } from "lucide-react";
+import { Package, AlertTriangle, CheckCircle, XCircle, Activity, Network } from "lucide-react";
 import cyberBgVideo from "@/assets/cyber-bg-video.mp4";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { Button } from "@/components/ui/button";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid
+} from "recharts";
 import PageTransition from "@/components/PageTransition";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
 
   const location = useLocation();
+  const navigate = useNavigate();
 
   const dependencies = location.state?.dependencies ?? 0;
   const vulnerabilities = location.state?.vulnerabilities ?? 0;
   const securityScore = location.state?.securityScore ?? 0;
   const status = location.state?.status ?? "Unknown";
+  const graph = location.state?.graph ?? null;
 
   const safePackages = Math.max(0, dependencies - vulnerabilities);
   const highRisk = Math.floor(vulnerabilities / 2);
@@ -52,6 +66,12 @@ const Dashboard = () => {
   const circumference = 2 * Math.PI * 80;
   const offset = circumference - (securityScore / 100) * circumference;
 
+  const openGraph = () => {
+    navigate("/graph", {
+      state: { graph }
+    });
+  };
+
   return (
     <PageTransition>
       <div className="min-h-screen pt-24 pb-12 relative overflow-hidden">
@@ -80,7 +100,7 @@ const Dashboard = () => {
               Risk Status: {status}
             </Badge>
 
-            {/* Score Gauge + Stats */}
+            {/* Score + Stats */}
 
             <div className="grid lg:grid-cols-3 gap-6 mb-8">
 
@@ -229,6 +249,19 @@ const Dashboard = () => {
                 </CardContent>
 
               </Card>
+
+            </div>
+
+            {/* Graph Button */}
+
+            <div className="mt-8 flex justify-center">
+
+              <Button onClick={openGraph} className="gap-2">
+
+                <Network className="w-4 h-4" />
+                View Dependency Graph
+
+              </Button>
 
             </div>
 

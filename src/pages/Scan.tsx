@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, Search, FileJson, Loader2, CheckCircle, Shield, ArrowRight, Zap } from "lucide-react";
+import { Search, FileJson, Loader2, CheckCircle, ArrowRight, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +22,8 @@ const Scan = () => {
   const [vulnerabilities, setVulnerabilities] = useState(0);
   const [securityScore, setSecurityScore] = useState(0);
   const [status, setStatus] = useState("");
+
+  const [graph, setGraph] = useState<any>(null);
 
   const navigate = useNavigate();
 
@@ -52,6 +54,8 @@ const Scan = () => {
       setVulnerabilities(data.vulnerabilities || 0);
       setSecurityScore(data.security_score || 0);
       setStatus(data.status || "Unknown");
+
+      setGraph(data.graph);
 
     } catch (error) {
 
@@ -92,7 +96,8 @@ const Scan = () => {
         dependencies,
         vulnerabilities,
         securityScore,
-        status
+        status,
+        graph
       }
     });
 
@@ -100,6 +105,7 @@ const Scan = () => {
 
   return (
     <PageTransition>
+
       <div className="min-h-screen pt-24 pb-12 relative overflow-hidden">
 
         <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0" src={cyberBgVideo} />
@@ -207,6 +213,7 @@ const Scan = () => {
         </div>
 
       </div>
+
     </PageTransition>
   );
 

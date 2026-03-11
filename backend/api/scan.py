@@ -58,6 +58,39 @@ def calculate_security_score(vulnerability_count: int):
 
 
 # -----------------------------
+# Dependency Graph Builder
+# -----------------------------
+def build_dependency_graph(package_name: str, dependencies: list):
+
+    nodes = []
+    edges = []
+
+    # Root node
+    nodes.append({
+        "id": package_name,
+        "type": "root"
+    })
+
+    # Dependency nodes
+    for dep in dependencies:
+
+        nodes.append({
+            "id": dep,
+            "type": "dependency"
+        })
+
+        edges.append({
+            "source": package_name,
+            "target": dep
+        })
+
+    return {
+        "nodes": nodes,
+        "edges": edges
+    }
+
+
+# -----------------------------
 # Scan Endpoint
 # -----------------------------
 @router.post("/scan-package")
@@ -67,6 +100,7 @@ def scan_package(request: PackageRequest):
 
     print("Scanning package:", package_name)
 
+    # Vulnerability Scan
     result = get_vulnerabilities(package_name)
 
     if not result["success"]:
@@ -74,14 +108,20 @@ def scan_package(request: PackageRequest):
             "status": "Error",
             "dependencies_found": 0,
             "vulnerabilities": 0,
-            "security_score": 0
+            "security_score": 0,
+            "graph": {
+                "nodes": [],
+                "edges": []
+            }
         }
 
     vulnerability_count = result["vulnerability_count"]
     vulnerabilities = result["vulnerabilities"]
 
+    # Extract Dependencies
     dependencies = get_package_dependencies(package_name)
 
+    # Calculate Security Score
     score = calculate_security_score(vulnerability_count)
 
     status = "Safe"
@@ -91,6 +131,9 @@ def scan_package(request: PackageRequest):
     elif vulnerability_count >= 2:
         status = "Moderate Risk"
 
+    # Build Dependency Graph
+    graph = build_dependency_graph(package_name, dependencies)
+
     return {
         "package": package_name,
         "security_score": score,
@@ -98,5 +141,6 @@ def scan_package(request: PackageRequest):
         "dependencies_found": len(dependencies),
         "dependencies": dependencies,
         "vulnerabilities": vulnerability_count,
-        "vulnerability_details": vulnerabilities
+        "vulnerability_details": vulnerabilities,
+        "graph": graph
     }

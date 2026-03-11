@@ -1,122 +1,138 @@
+import { useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Network } from "lucide-react";
-import cyberBgVideo from "@/assets/cyber-bg-video.mp4";
 import PageTransition from "@/components/PageTransition";
 
-interface Node {
-  id: string;
-  label: string;
-  x: number;
-  y: number;
-  risk: "safe" | "low" | "medium" | "high" | "critical";
-  deps: string[];
-}
+const DependencyGraph = () => {
 
-const riskColors: Record<string, string> = {
-  safe: "hsl(145 80% 50%)",
-  low: "hsl(195 100% 50%)",
-  medium: "hsl(45 100% 55%)",
-  high: "hsl(20 85% 50%)",
-  critical: "hsl(0 85% 55%)",
-};
+  const location = useLocation();
+  const graph = location.state?.graph;
 
-const nodes: Node[] = [
-  { id: "root", label: "my-web-app", x: 400, y: 50, risk: "safe", deps: ["react", "express", "lodash"] },
-  { id: "react", label: "react@18.2.0", x: 150, y: 170, risk: "safe", deps: ["react-dom"] },
-  { id: "express", label: "express@4.18.2", x: 400, y: 170, risk: "medium", deps: ["body-parser", "qs"] },
-  { id: "lodash", label: "lodash@4.17.20", x: 650, y: 170, risk: "critical", deps: [] },
-  { id: "react-dom", label: "react-dom@18.2.0", x: 80, y: 300, risk: "safe", deps: [] },
-  { id: "body-parser", label: "body-parser@1.20.1", x: 300, y: 300, risk: "low", deps: [] },
-  { id: "qs", label: "qs@6.11.0", x: 500, y: 300, risk: "high", deps: [] },
-];
+  if (!graph) {
+    return (
+      <PageTransition>
+        <div className="container pt-24">
+          <h1>No dependency graph available</h1>
+        </div>
+      </PageTransition>
+    );
+  }
 
-const nodeMap = Object.fromEntries(nodes.map((n) => [n.id, n]));
+  const nodes = graph.nodes || [];
+  const edges = graph.edges || [];
 
-const DependencyGraph = () => (
-  <PageTransition>
-    <div className="min-h-screen pt-24 pb-12 relative overflow-hidden">
-      <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0" src={cyberBgVideo} />
-      <div className="absolute inset-0 bg-background/80 z-[1]" />
-      <div className="absolute inset-0 cyber-grid z-[2]" />
-      <div className="container relative z-[3]">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-          <div className="flex items-center gap-3 mb-1">
-            <Network className="w-6 h-6 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground drop-shadow-[0_0_10px_hsl(195_100%_50%/0.3)]">Dependency Graph</h1>
-          </div>
-          <p className="text-foreground/70 text-sm mb-8">Interactive visualization of your dependency tree with risk indicators.</p>
+  const root = nodes[0];
+  const dependencies = nodes.slice(1);
 
-          <Card className="bg-card/40 border-border/50 overflow-hidden backdrop-blur-sm">
-            <CardContent className="p-0">
-              <svg width="100%" viewBox="0 0 800 400" className="bg-background/30">
-                {nodes.map((node) =>
-                  node.deps.map((depId) => {
-                    const dep = nodeMap[depId];
-                    if (!dep) return null;
-                    return (
-                      <motion.line
-                        key={`${node.id}-${depId}`}
-                        x1={node.x} y1={node.y + 20}
-                        x2={dep.x} y2={dep.y - 5}
-                        stroke={riskColors[dep.risk]}
-                        strokeWidth={1.5}
-                        strokeOpacity={0.4}
-                        initial={{ pathLength: 0 }}
-                        animate={{ pathLength: 1 }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                      />
-                    );
-                  })
-                )}
-                {nodes.map((node, i) => (
-                  <motion.g
-                    key={node.id}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: i * 0.15, type: "spring" }}
+  const width = 1000;
+  const rootX = width / 2;
+  const rootY = 80;
+
+  const perRow = 8;
+  const rowSpacing = 120;
+  const colSpacing = width / (perRow + 1);
+
+  const totalRows = Math.ceil(dependencies.length / perRow);
+
+  const svgHeight = 220 + totalRows * rowSpacing + 120;
+
+  const positionedNodes = [
+    { ...root, x: rootX, y: rootY },
+
+    ...dependencies.map((node: any, i: number) => {
+
+      const row = Math.floor(i / perRow);
+      const col = i % perRow;
+
+      return {
+        ...node,
+        x: colSpacing * (col + 1),
+        y: 220 + row * rowSpacing
+      };
+
+    })
+  ];
+
+  const findNode = (id: string) =>
+    positionedNodes.find(n => n.id === id);
+
+  return (
+    <PageTransition>
+
+      <div className="container pt-24">
+
+        <div className="flex items-center gap-3 mb-6">
+          <Network className="w-6 h-6 text-primary" />
+          <h1 className="text-2xl font-bold">Dependency Graph</h1>
+        </div>
+
+        <Card className="bg-card/40 backdrop-blur-sm border-border/50">
+          <CardContent>
+
+            <svg width={width} height={svgHeight}>
+
+              {edges.map((edge: any, i: number) => {
+
+                const source = findNode(edge.source);
+                const target = findNode(edge.target);
+
+                if (!source || !target) return null;
+
+                return (
+                  <line
+                    key={i}
+                    x1={source.x}
+                    y1={source.y}
+                    x2={target.x}
+                    y2={target.y}
+                    stroke="#888"
+                    strokeWidth="1.5"
+                  />
+                );
+
+              })}
+
+              {positionedNodes.map((node: any, i: number) => (
+
+                <motion.g
+                  key={node.id}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.03 }}
+                >
+
+                  <circle
+                    cx={node.x}
+                    cy={node.y}
+                    r={node.type === "root" ? 16 : 10}
+                    fill="#00e0ff"
+                  />
+
+                  <text
+                    x={node.x}
+                    y={node.y + 22}
+                    textAnchor="middle"
+                    fill="white"
+                    fontSize="11"
                   >
-                    {(node.risk === "critical" || node.risk === "high") && (
-                      <circle cx={node.x} cy={node.y} r={25} fill={riskColors[node.risk]} fillOpacity={0.1}>
-                        <animate attributeName="r" values="25;35;25" dur="2s" repeatCount="indefinite" />
-                        <animate attributeName="fill-opacity" values="0.1;0.05;0.1" dur="2s" repeatCount="indefinite" />
-                      </circle>
-                    )}
-                    <circle
-                      cx={node.x} cy={node.y} r={node.id === "root" ? 18 : 14}
-                      fill={riskColors[node.risk]}
-                      fillOpacity={0.15}
-                      stroke={riskColors[node.risk]}
-                      strokeWidth={2}
-                    />
-                    <circle cx={node.x} cy={node.y} r={4} fill={riskColors[node.risk]} />
-                    <text
-                      x={node.x} y={node.y + (node.id === "root" ? 32 : 28)}
-                      textAnchor="middle"
-                      fill="hsl(210 40% 93%)"
-                      fontSize={10}
-                      fontFamily="JetBrains Mono, monospace"
-                    >
-                      {node.label}
-                    </text>
-                  </motion.g>
-                ))}
-              </svg>
-            </CardContent>
-          </Card>
+                    {node.id}
+                  </text>
 
-          <div className="flex items-center justify-center gap-6 mt-6">
-            {Object.entries(riskColors).map(([level, color]) => (
-              <div key={level} className="flex items-center gap-2 text-xs">
-                <div className="w-3 h-3 rounded-full border-2" style={{ borderColor: color, background: `${color}20` }} />
-                <span className="text-foreground/70 capitalize">{level}</span>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+                </motion.g>
+
+              ))}
+
+            </svg>
+
+          </CardContent>
+        </Card>
+
       </div>
-    </div>
-  </PageTransition>
-);
+
+    </PageTransition>
+  );
+
+};
 
 export default DependencyGraph;
