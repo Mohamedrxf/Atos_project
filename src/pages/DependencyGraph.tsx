@@ -30,7 +30,7 @@ const DependencyGraph = () => {
   const initialGraph: GraphData = location.state?.graph ?? { nodes: [], edges: [] };
   const attackPaths: string[][] = location.state?.attackPaths ?? [];
 
-  const [graph, setGraph] = useState(initialGraph);
+  const [graph, setGraph] = useState<GraphData>(initialGraph);
   const [showAttackPaths, setShowAttackPaths] = useState(false);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [expandingNode, setExpandingNode] = useState<string | null>(null);
@@ -40,15 +40,14 @@ const DependencyGraph = () => {
 
   const activeNode = selectedNode || hoveredNode;
 
-  // Connected nodes for dimming - must be before early return
   const connectedNodeIds = useMemo(() => {
     if (!activeNode) return null;
-    const set = new Set<string>([activeNode]);
+    const ids = new Set<string>([activeNode]);
     graph.edges.forEach(e => {
-      if (e.source === activeNode) set.add(e.target);
-      if (e.target === activeNode) set.add(e.source);
+      if (e.source === activeNode) ids.add(e.target);
+      if (e.target === activeNode) ids.add(e.source);
     });
-    return set;
+    return ids;
   }, [activeNode, graph.edges]);
 
   if (!graph.nodes.length) {
