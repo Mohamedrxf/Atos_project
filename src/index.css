@@ -1,102 +1,61 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* OS³ Design System - Cybersecurity Dark Theme */
 
 @layer base {
   :root {
-    /* Core surfaces - Deep navy to black */
-    --background: 222 47% 5%;
-    --foreground: 210 40% 93%;
+    --background: 210 20% 98%;
+    --foreground: 220 20% 10%;
     
-    /* Cards - Slightly elevated navy */
-    --card: 222 44% 8%;
-    --card-foreground: 210 40% 93%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
     
-    /* Popover */
-    --popover: 222 44% 10%;
-    --popover-foreground: 210 40% 93%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
     
-    /* Primary - Neon cyan/blue */
-    --primary: 195 100% 50%;
-    --primary-foreground: 222 47% 5%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
     
-    /* Secondary - Muted navy */
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 210 20% 70%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 20% 25%;
     
-    /* Muted */
-    --muted: 222 30% 12%;
-    --muted-foreground: 215 20% 50%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 46%;
     
-    /* Accent - Purple highlight */
-    --accent: 265 80% 55%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 217 91% 95%;
+    --accent-foreground: 217 91% 40%;
     
-    /* Status */
-    --destructive: 0 85% 55%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
-    /* Utility */
-    --border: 222 25% 16%;
-    --input: 222 30% 12%;
-    --ring: 195 100% 50%;
-    --radius: 0.5rem;
-    
-    /* Neon glow tokens */
-    --neon-blue: 195 100% 50%;
-    --neon-purple: 265 80% 60%;
-    --neon-green: 145 80% 50%;
-    --neon-red: 0 85% 55%;
-    --neon-yellow: 45 100% 55%;
-    
-    /* Score colors */
-    --score-excellent: 145 80% 50%;
-    --score-good: 165 70% 45%;
-    --score-average: 45 100% 55%;
-    --score-poor: 20 85% 50%;
-    --score-critical: 0 85% 55%;
-    
-    /* Chart colors */
-    --chart-1: 195 100% 50%;
-    --chart-2: 265 80% 60%;
-    --chart-3: 145 80% 50%;
-    --chart-4: 45 100% 55%;
-    --chart-5: 0 85% 55%;
-    
-    /* Sidebar */
-    --sidebar-background: 222 47% 4%;
-    --sidebar-foreground: 210 20% 80%;
-    --sidebar-primary: 195 100% 50%;
-    --sidebar-primary-foreground: 222 47% 5%;
-    --sidebar-accent: 222 30% 10%;
-    --sidebar-accent-foreground: 210 20% 90%;
-    --sidebar-border: 222 25% 12%;
-    --sidebar-ring: 195 100% 50%;
-  }
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 217 91% 60%;
+    --radius: 0.75rem;
 
-  .dark {
-    --background: 222 47% 5%;
-    --foreground: 210 40% 93%;
-    --card: 222 44% 8%;
-    --card-foreground: 210 40% 93%;
-    --popover: 222 44% 10%;
-    --popover-foreground: 210 40% 93%;
-    --primary: 195 100% 50%;
-    --primary-foreground: 222 47% 5%;
-    --secondary: 222 30% 14%;
-    --secondary-foreground: 210 20% 70%;
-    --muted: 222 30% 12%;
-    --muted-foreground: 215 20% 50%;
-    --accent: 265 80% 55%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 85% 55%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 222 25% 16%;
-    --input: 222 30% 12%;
-    --ring: 195 100% 50%;
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --info: 217 91% 60%;
+    --info-foreground: 0 0% 100%;
+
+    --chart-1: 217 91% 60%;
+    --chart-2: 142 76% 36%;
+    --chart-3: 38 92% 50%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 0 84% 60%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 220 10% 46%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 91% 97%;
+    --sidebar-accent-foreground: 217 91% 40%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217 91% 60%;
   }
 }
 
@@ -108,75 +67,68 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
   }
-
-  .font-mono {
-    font-feature-settings: "tnum" 1, "zero" 1;
-  }
 }
 
 @layer components {
-  /* Neon glow effects */
-  .glow-blue {
-    box-shadow: 0 0 20px -5px hsl(var(--neon-blue) / 0.4),
-                0 0 60px -15px hsl(var(--neon-blue) / 0.2);
-  }
-  
-  .glow-purple {
-    box-shadow: 0 0 20px -5px hsl(var(--neon-purple) / 0.4),
-                0 0 60px -15px hsl(var(--neon-purple) / 0.2);
-  }
-  
-  .glow-green {
-    box-shadow: 0 0 15px -5px hsl(var(--neon-green) / 0.4);
-  }
-  
-  .glow-red {
-    box-shadow: 0 0 15px -5px hsl(var(--neon-red) / 0.4);
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl shadow-sm;
   }
 
-  /* Cyber grid background */
-  .cyber-grid {
-    background-image: 
-      linear-gradient(hsl(var(--neon-blue) / 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--neon-blue) / 0.05) 1px, transparent 1px);
-    background-size: 50px 50px;
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:shadow-md hover:shadow-primary/5 hover:border-primary/20 hover:-translate-y-0.5;
   }
 
-  /* Scan line animation */
-  .scan-line {
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      hsl(var(--neon-blue) / 0.1) 45%,
-      hsl(var(--neon-blue) / 0.3) 50%,
-      hsl(var(--neon-blue) / 0.1) 55%,
-      transparent 100%
-    );
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary to-accent-foreground bg-clip-text text-transparent;
   }
 
-  /* Data table */
-  .data-table {
-    @apply w-full text-sm;
-  }
-  
-  .data-table th {
-    @apply text-left text-muted-foreground font-medium text-xs uppercase tracking-wider py-3 px-4 border-b border-border;
-  }
-  
-  .data-table td {
-    @apply py-3 px-4 border-b border-border/50;
-  }
-  
-  .data-table tr:hover td {
-    @apply bg-muted/30;
+  .status-badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
   }
 
-  /* Score classes */
-  .score-excellent { color: hsl(var(--score-excellent)); }
-  .score-good { color: hsl(var(--score-good)); }
-  .score-average { color: hsl(var(--score-average)); }
-  .score-poor { color: hsl(var(--score-poor)); }
-  .score-critical { color: hsl(var(--score-critical)); }
+  .agent-card {
+    @apply relative p-4 rounded-xl border border-border/50 bg-card transition-all duration-500;
+  }
+
+  .agent-card.active {
+    @apply border-primary/40 shadow-lg shadow-primary/10 bg-accent/30;
+  }
+
+  .agent-card.completed {
+    @apply border-green-300 bg-green-50/50;
+  }
+
+  .animated-bg {
+    background: linear-gradient(-45deg, 
+      hsl(217 91% 97%), 
+      hsl(210 20% 98%), 
+      hsl(217 91% 95%), 
+      hsl(220 14% 96%));
+    background-size: 400% 400%;
+    animation: gradient-shift 15s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  @keyframes float-particle {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: hsl(var(--primary) / 0.3);
+    animation: float-particle linear infinite;
+  }
 }
 
 @layer utilities {
